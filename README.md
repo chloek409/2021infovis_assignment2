@@ -1,3 +1,1 @@
 ## InfoVis assn2
-
-
