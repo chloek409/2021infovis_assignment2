@@ -1,15 +1,16 @@
 import React from "react";
-import Mainplot from "./components/Mainplot";
+import Mainplot from "./components/MainPlot";
 
 import movies from "./data/movie.json";
 
 import "./App.css";
+import MainPlot from "./components/MainPlot";
 
 
 function App() {
 
-  const name = "Hyeon Jeon";
-  const studentNum = "2020-2XXXX";
+  const name = "Sohyun Kim"
+  const studentNum = "2021-25515"
 
   const nominal = ["genre", "creative_type", "source"];
   const ordinal = ["release", "rating"];
@@ -30,6 +31,13 @@ function App() {
         <h2 style={{marginTop: 25}}>
           {name + " (" + studentNum + ")"}
         </h2>
+      </div>
+      <div>
+        <MainPlot
+          size={width}
+          data={movies}
+          margin={margin}
+        />
       </div>
     </div>
   );
