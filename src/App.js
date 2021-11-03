@@ -1,10 +1,8 @@
 import React from "react";
-import Mainplot from "./components/MainPlot";
-
 import movies from "./data/movie.json";
-
-import "./App.css";
 import MainPlot from "./components/MainPlot";
+import ControlPanel from "./components/ControlPanel";
+import "./App.css";
 
 
 function App() {
@@ -34,9 +32,15 @@ function App() {
       </div>
       <div>
         <MainPlot
-          size={width}
           data={movies}
+          size={width}
+          height={height}
           margin={margin}
+          nominal={nominal}
+          ordinal={ordinal}
+          quantitative={quantitative}
+          pointSize={pointSize}
+          maxPointSize={maxPointSize}
         />
       </div>
     </div>
