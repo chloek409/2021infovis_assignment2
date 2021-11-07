@@ -33,7 +33,7 @@ function App() {
       <div>
         <MainPlot
           data={movies}
-          size={width}
+          width={width}
           height={height}
           margin={margin}
           nominal={nominal}

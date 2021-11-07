@@ -4,23 +4,30 @@ import Select from 'react-select';
 
 const ControlPanel = (props) => {
 
-    const nominal = props.selection;
+    const selection = props.selection;
     const attribute = props.attribute;
 
-    var options = nominal.map(function(nominal) {
-        return {value: nominal, label: nominal}
+    var options = selection.map(function(selection) {
+        return {value: selection, label: selection}
     })
-    const [selectedOption, setSelectedOption] = useState(null);
 
-const changeSelectedOption = () => {
-    // setSelectedOption("circles");
-}
+    const [selectedOption, setSelectedOption] = useState(props.defaultV);
+    const changeSelectedOption = (selectedOption) => {
+        setSelectedOption(selectedOption);
+        console.log(selectedOption.value);
+    }
     const menuStyle = {display: "flex", marginRight: 20}
-      return (
+    return (
           <div className = "ControlMenuContainer">
             <div style={menuStyle}>
                 <div style={{marginRight: 7}}>{attribute}</div>
-                <Select defaultValue={selectedOption} options={options} onChange={changeSelectedOption}/>
+                <Select
+                    options={options}
+                    placeholder={props.defaultV}
+                    defaultValue={props.defaultV}
+                    value = {selectedOption}
+                    onChange={changeSelectedOption}
+                />
             </div>
           </div>
       )
