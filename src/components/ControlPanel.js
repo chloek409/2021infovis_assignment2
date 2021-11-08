@@ -11,7 +11,7 @@ const ControlPanel = (props) => {
         return {value: selection, label: selection}
     })
 
-    const [selectedOption, setSelectedOption] = useState(props.defaultV);
+    const [selectedOption, setSelectedOption] = useState(props.defaultVal);
     const changeSelectedOption = (selectedOption) => {
         setSelectedOption(selectedOption);
         console.log(selectedOption.value);
@@ -23,8 +23,8 @@ const ControlPanel = (props) => {
                 <div style={{marginRight: 7}}>{attribute}</div>
                 <Select
                     options={options}
-                    placeholder={props.defaultV}
-                    defaultValue={props.defaultV}
+                    placeholder={props.defaultVal}
+                    defaultValue={props.defaultVal}
                     value = {selectedOption}
                     onChange={changeSelectedOption}
                 />
