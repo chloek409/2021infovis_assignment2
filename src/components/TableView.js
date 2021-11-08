@@ -4,9 +4,13 @@ import * as d3 from "d3";
 
 const TableView = (props) => {
 
-    const
+    const tableStyle = {
+        width:"400px",
+        height:"350px"
+    }
+    
     return (
-        <div className = "ControlMenuContainer">
+        <div className = "TableViewContainer" style={tableStyle}>
           <div>
               "TableView locates HERE"
           </div>
