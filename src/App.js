@@ -1,7 +1,6 @@
 import React from "react";
 import movies from "./data/movie.json";
 import MainPlot from "./components/MainPlot";
-import ControlPanel from "./components/ControlPanel";
 import "./App.css";
 
 

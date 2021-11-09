@@ -4,16 +4,25 @@ import * as d3 from "d3";
 
 const TableView = (props) => {
 
-    const tableStyle = {
-        width:"400px",
-        height:"350px"
-    }
-    
+    const tableviewCol = [
+        { title: "title", field: "title"},
+        { title: "genre", field: "genre"},
+        { title: "creative_type", field: "creative_type"},
+        { title: "release", field: "release"},
+        { title: "rating", field: "rating"}
+    ]
+ 
     return (
-        <div className = "TableViewContainer" style={tableStyle}>
-          <div>
-              "TableView locates HERE"
-          </div>
+        <div className = "TableViewContainer" style={{ width:"600px", height:"400px"}}>
+            <MaterialTable
+            columns={tableviewCol}
+            data={props.selectedMovies}
+            options={{
+                toolbar:false,
+                paging: false,
+                maxBodyHeight: 350,
+                rowStyle: {fontSize: 12.5}
+            }} />
         </div>
     )
 };
