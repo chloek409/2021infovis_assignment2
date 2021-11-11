@@ -1,27 +1,26 @@
 import React, {useState, useRef, useEffect} from "react";
+import * as d3 from "d3";
 import Select from 'react-select';
 
 const ControlPanel = (props) => {
 
-    const selection = props.selection;
+    const menus = props.menuOptions;
     const attribute = props.attribute;
 
-    var options = selection.map(function(selection, i) {
-        return {value: i, label: selection}
+    var options = menus.map(function(menus, i) {
+        return {value: menus, label: menus}
     })
 
     const [selectedOption, setSelectedOption] = useState(props.defaultVal);
     const changeSelectedOption = (selectedOption) => {
         setSelectedOption(selectedOption);
-        console.log(selectedOption)
+        props.setMenu(selectedOption.value);
     }
 
-
-    const menuStyle = {display: "flex", marginRight: 20}
     return (
           <div className = "ControlMenuContainer">
-            <div style={menuStyle}>
-                <div style={{marginRight: 7}}>{attribute}</div>
+            <div style={{display: "flex", marginRight: 20}}>
+                <div style={{marginTop: 9, marginRight: 7}}>{attribute}</div>
                 <Select
                     options={options}
                     placeholder={props.defaultVal}

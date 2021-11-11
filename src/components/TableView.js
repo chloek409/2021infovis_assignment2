@@ -14,14 +14,14 @@ const TableView = (props) => {
     return (
         <div className = "TableViewContainer" style={{ width:"600px", height:"400px"}}>
             <MaterialTable
-            columns={tableviewCol}
-            data={props.selectedMovies}
-            options={{
-                toolbar:false,
-                paging: false,
-                maxBodyHeight: 350,
-                rowStyle: {fontSize: 12.5}
-            }} />
+                columns={tableviewCol}
+                data={props.selectedMovies}
+                options={{
+                    toolbar:false,
+                    paging: false,
+                    maxBodyHeight: 350,
+                    rowStyle: {fontSize: 12.5} }}
+            />
         </div>
     )
 };

@@ -1,11 +1,11 @@
 import React from "react";
-import {
-  RecoilRoot,
-  atom,
-  selector,
-  useRecoilState,
-  useRecoilValue,
-} from 'recoil';
+// import {
+//   RecoilRoot,
+//   atom,
+//   selector,
+//   useRecoilState,
+//   useRecoilValue,
+// } from 'recoil';
 
 import movies from "./data/movie.json";
 import MainPlot from "./components/MainPlot";
@@ -20,6 +20,7 @@ function App() {
   const nominal = ["genre", "creative_type", "source"];
   const ordinal = ["release", "rating"];
   const quantitative = ["budget", "us_gross", "worldwide_gross", "rotten_rating", "imdb_rating", "imdb_votes"];
+  
   const nom_ord_none = ["none", "genre", "creative_type", "source", "release", "rating"]
   const qnt_none= ["none", "budget", "us_gross", "worldwide_gross", "rotten_rating", "imdb_rating", "imdb_votes"]
   
@@ -39,7 +40,6 @@ function App() {
           {name + " (" + studentNum + ")"}
         </h2>
       </div>
-      <RecoilRoot>
         <MainPlot
           data={movies}
           width={width}
@@ -53,7 +53,6 @@ function App() {
           pointSize={pointSize}
           maxPointSize={maxPointSize}
         />
-      </RecoilRoot>
     </div>
   );
 }
