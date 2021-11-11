@@ -1,6 +1,5 @@
 import React, { useState, useRef, useEffect} from "react";
 import * as d3 from "d3";
-
 import ControlPanel from "./ControlPanel";
 import TableView from "./TableView";
 
@@ -10,8 +9,6 @@ const MainPlot = (props) => {
     const scatterplotSvg = useRef(null);
     const svgWidth = props.width + 2*props.margin;
     const svgHeight = props.height + 2*props.margin;
-    
-    const q = props.quantitative;
 
     // TODO
     let movieData = props.data;
@@ -46,43 +43,41 @@ const MainPlot = (props) => {
         
         /* Enable brushing. */
         const brush = d3.brush().extent([
+
             [d3.min(xScale.range()), d3.min(yScale.range())],
             [d3.max(xScale.range()), d3.max(yScale.range())]]).on("start end", brushed);
     
-        const circle = svg.selectAll('circle');
-        function brushed({selection}) {
-            // circle.style("fill", null);
-            d3.selectAll('circle').style("fill", null);
-            selectedData = [];
-            if (selection === null) circle.classed("selected", false);
-            else {
-                let [[x0, y0], [x1, y1]] = selection;
-                circle.classed("selected", (d, i) => {
-                    let xCoord = xScale(d.imdb_rating);
-                    let yCoord = yScale(d.us_gross);
-                    if (x0 <= xCoord && xCoord <= x1    && y0 <= yCoord && yCoord <= y1) {
-                        selectedData.push(d);
+            const circle = svg.selectAll('circle');
+            function brushed({selection}) {
+                d3.selectAll('circle').style("fill", null);
+                selectedData = [];
+                if (selection === null) circle.classed("selected", false);
+                else {
+                    let [[x0, y0], [x1, y1]] = selection;
+                    circle.classed("selected", (d, i) => {
+                        let xCoord = xScale(d.imdb_rating);
+                        let yCoord = yScale(d.us_gross);
+                        if (x0 <= xCoord && xCoord <= x1    && y0 <= yCoord && yCoord <= y1)
+                            selectedData.push(d);
+                        return x0 <= xCoord && xCoord <= x1 && y0 <= yCoord && yCoord <= y1;
+                        })
                     }
-                    return x0 <= xCoord && xCoord <= x1 && y0 <= yCoord && yCoord <= y1;
-                })
-            }
-            setMovies(selectedData);
-            // selectedData.forEach(d => d3.selectAll(".selected" + d).style("fill", "red"));
-        }
+                setMovies(selectedData);
+                }
 
-        svg.append('g').attr('transform', `translate(${props.margin}, ${props.margin})`)
-        .call(brush);
-    }, []);
+            svg.append('g').attr('transform', `translate(${props.margin}, ${props.margin})`)
+            .call(brush);
+        }, []);
 
     
 	return (
     <div>
         <div className="ControlPanelContainer" style={{display: "flex"}}>
-            <ControlPanel selection={q} attribute="x: " defaultVal="imdb_rating"/>
-            <ControlPanel selection={q} attribute="y: " defaultVal={"us_gross"}/>
-            <ControlPanel selection={props.nominal} attribute="Color: " defaultVal="none"/>
-            <ControlPanel selection={q} attribute="Opacity: " defaultVal="none"/>
-            <ControlPanel selection={props.quantitative} attribute="Size: " defaultVal={"none"} />
+            <ControlPanel selection={props.quantitative} attribute="x: " defaultVal="imdb_rating"/>
+            <ControlPanel selection={props.quantitative} attribute="y: " defaultVal="us_gross"/>
+            <ControlPanel selection={props.colorOptions} attribute="Color: " defaultVal="none"/>
+            <ControlPanel selection={props.opacityAndSizeOptions} attribute="Opacity: " defaultVal="none"/>
+            <ControlPanel selection={props.opacityAndSizeOptions} attribute="Size: " defaultVal="none" />
         </div>
         <div style={{marginTop: 20, display: "flex"}}>
             <svg style={{marginRight: 20}} ref={scatterplotSvg} width={svgWidth} height={svgHeight}/>

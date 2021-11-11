@@ -1,6 +1,5 @@
 import React, { useRef, useEffect} from "react";
 import MaterialTable from "material-table";
-import * as d3 from "d3";
 
 const TableView = (props) => {
 

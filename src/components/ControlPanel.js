@@ -1,21 +1,13 @@
 import React, {useState, useRef, useEffect} from "react";
-import * as d3 from "d3";
 import Select from 'react-select';
 
 const ControlPanel = (props) => {
 
-    
-    const sel = props.selection;
-    let selection = [];
-    if (props.defaultVal === "none") {
-        selection = sel;
-    }
-    else selection = sel;
-
+    const selection = props.selection;
     const attribute = props.attribute;
 
-    var options = selection.map(function(i, selection) {
-        return {value: selection, label: i}
+    var options = selection.map(function(selection, i) {
+        return {value: i, label: selection}
     })
 
     const [selectedOption, setSelectedOption] = useState(props.defaultVal);
