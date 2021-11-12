@@ -12,7 +12,7 @@ const TableView = (props) => {
     ]
  
     return (
-        <div className = "TableViewContainer" style={{ width:"600px", height:"400px"}}>
+        <div className = "TableViewContainer" style={{ marginTop: 50, width:"550px", height:"400px"}}>
             <MaterialTable
                 columns={tableviewCol}
                 data={props.selectedMovies}

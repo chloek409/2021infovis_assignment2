@@ -38,18 +38,18 @@ const MainPlot = (props) => {
         /* Plot movie data graph. */
         let xScale = d3.scaleLinear().domain(
             [d3.min(movieData, d=>d[x]), d3.max(movieData, d=>d[x])])
-            .range([0,props.width]);
+            .range([0,width]);
 
         let yScale = d3.scaleLinear().domain(
             [d3.min(movieData, d=>d[y]), d3.max(movieData, d=>d[y])])
-            .range([props.height, 0]);
+            .range([height, 0]);
 
         let xAxis = d3.axisBottom(xScale);
         let yAxis = d3.axisLeft(yScale);
 
         const svg = d3.select(scatterplotSvg.current);
-        svg.append('g').attr('transform', `translate(${props.margin}, ${svgHeight-props.margin})`).call(xAxis);
-        svg.append('g').attr('transform', `translate(${props.margin}, ${props.margin})`).call(yAxis);
+        svg.append('g').attr('transform', `translate(${props.margin}, ${svgHeight-props.margin})`).classed("xAxis", true).call(xAxis);
+        svg.append('g').attr('transform', `translate(${props.margin}, ${props.margin})`).classed("yAxis", true).call(yAxis);
 
         svg.append('g')
             .attr('transform', `translate(${props.margin}, ${props.margin})`)
@@ -59,14 +59,16 @@ const MainPlot = (props) => {
             .attr('r', props.pointSize)
             .attr('cx', d=>xScale(d[x]))
             .attr('cy', d=>yScale(d[y]))
+            .attr("opacity", 1.0)
             .attr('fill', "black");
 
         /* Enable brushing. */
         const brush = d3.brush().extent([
             [d3.min(xScale.range()), d3.min(yScale.range())],
-            [d3.max(xScale.range()), d3.max(yScale.range())]]).on("start end", brushed);
+            [d3.max(xScale.range()), d3.max(yScale.range())]]).on("end", brushed);
     
             const circle = svg.selectAll('circle');
+
             function brushed({selection}) {
                 d3.selectAll('circle').style("fill", null);
                 let selectedData = [];
@@ -82,15 +84,14 @@ const MainPlot = (props) => {
                         })
                     }
                 setMovies(selectedData);
-                }
-
+            }
             svg.append('g').attr('transform', `translate(${props.margin}, ${props.margin})`)
             .call(brush);
         }, []);
 
 
     useEffect(() => {
-        /* Plot movie data graph. */
+        setMovies([]);
         let xScale = d3.scaleLinear().domain(
             [d3.min(movieData, d=>d[x]), d3.max(movieData, d=>d[x])])
             .range([0,width]);
@@ -108,9 +109,13 @@ const MainPlot = (props) => {
             [d3.min(movieData, d=>d[ptsize]), d3.max(movieData, d=>d[ptsize])])
             .range([props.pointSize, props.maxPointSize]);
 
+        let opacityScale = d3.scaleLinear().domain(
+            [d3.min(movieData, d=>d[opacity]), d3.max(movieData, d=>d[opacity])])
+            .range([0,1]);        
+
         const svg = d3.select(scatterplotSvg.current);
-        // svg.attr('transform', `translate(${props.margin}, ${height})`).call(xAxis).transition().duration(1000);
-        // svg.attr('transform', `translate(${2*props.margin}, ${props.margin})`).call(yAxis).transition().duration(1000);
+        svg.select('.xAxis').transition().duration(1000).call(xAxis);
+        svg.select(".yAxis").transition().duration(1000).call(yAxis);
 
         svg.attr('transform', `translate(${props.margin}, ${props.margin})`)
             .selectAll('circle')
@@ -121,19 +126,22 @@ const MainPlot = (props) => {
             .attr('r', function(d) {if (ptsize === "none") return props.pointSize; else return radiusScale(d[ptsize])})
             .attr('cx', d=>xScale(d[x]))
             .attr('cy', d=>yScale(d[y]))
+            .attr("opacity", function(d) {if (opacity === "none") return 1.0; else return opacityScale(d[opacity])})
             .attr('fill', function(d) {if (color === "none") return "black"; else return colorScale(d[color])});
 
         /* Enable brushing. */
         const brush = d3.brush().extent([
             [d3.min(xScale.range()), d3.min(yScale.range())],
-            [d3.max(xScale.range()), d3.max(yScale.range())]]).on("start end", brushed);
+            [d3.max(xScale.range()), d3.max(yScale.range())]]).on("end", brushed);
     
             const circle = svg.selectAll('circle');
-
             function brushed({selection}) {
                 d3.selectAll('circle').style("fill", null);
                 let selectedData = [];
-                if (selection === null) {circle.classed("selected", false); selectedData=[];}
+                if (selection === null) {
+                    circle.classed("selected", false);
+                    selectedData=[];
+                }
                 else {
                     let [[x0, y0], [x1, y1]] = selection;
                     circle.classed("selected", (d, i) => {
@@ -148,8 +156,8 @@ const MainPlot = (props) => {
                 setMovies(selectedData);
                 }
 
-            svg.append('g').attr('transform', `translate(${props.margin}, ${props.margin})`)
-            .call(brush);
+            svg.select('.selection').remove();
+            svg.append('g').attr('transform', `translate(${props.margin}, ${props.margin})`).call(brush);
         }, [x,y,color, opacity, ptsize]);
 
     
@@ -162,8 +170,8 @@ const MainPlot = (props) => {
             <ControlPanel menuOptions={props.opacityAndSizeOptions} attribute="Opacity: " defaultVal="none" setMenu={setOpacity}/>
             <ControlPanel menuOptions={props.opacityAndSizeOptions} attribute="Size: " defaultVal="none" setMenu={setPtsize}/>
         </div>
-        <div style={{marginTop: 20, display: "flex"}}>
-            <svg style={{marginRight: 20}} ref={scatterplotSvg} width={svgWidth} height={svgHeight}>
+        <div style={{marginTop: 10, display: "flex"}}>
+            <svg style={{marginRight: 50}} ref={scatterplotSvg} width={svgWidth} height={svgHeight}>
             </svg>
             <TableView selectedMovies={movies}/>
 		</div>
